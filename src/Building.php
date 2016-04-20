@@ -123,9 +123,9 @@ class Building
         $elevator = self::getElevator();
         try {
             if ($elevator->getFloor() == $buf) {
-                $elevator->ElevatorCar($buf);
+                $elevator->elevatorCar($buf);
             } else {
-                $elevator->ElevatorMove($buf);
+                $elevator->elevatorMove($buf);
             }
         } catch (\Exception $exc) {
             $stream->write($exc->getMessage());

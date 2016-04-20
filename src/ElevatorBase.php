@@ -86,7 +86,7 @@ abstract class ElevatorBase implements ElevatorInterface
      * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorMove($floor)
+    public function elevatorMove($floor)
     {
         $floor = (int)$floor;
         if(is_numeric($floor)) {
@@ -103,7 +103,7 @@ abstract class ElevatorBase implements ElevatorInterface
      * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorCar($floor)
+    public function elevatorCar($floor)
     {
         $floor = (int)$floor;
         if(is_numeric($floor)) {

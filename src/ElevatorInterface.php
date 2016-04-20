@@ -28,7 +28,7 @@ interface ElevatorInterface
      * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorMove($floor);
+    public function elevatorMove($floor);
     
     /**
      * tell elevator in which floor human want
@@ -36,5 +36,5 @@ interface ElevatorInterface
      * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorCar($floor);
+    public function elevatorCar($floor);
 }

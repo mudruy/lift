@@ -32,8 +32,8 @@ class Elevator extends ElevatorBase
    */
     public function run($stream) 
     {
-        $lift_on_floor_message = 'Лифт находиться на этаже ';
-        $lift_on_your_floor_message = 'Лифт находиться на вашем этаже ';
+        $lift_mess = 'Лифт находиться на этаже ';
+        $lift_y_floor_mess = 'Лифт находиться на вашем этаже ';
         //if exist humane inside lift 
         if (count($this->CallCar) > 0) {
             foreach ($this->CallCar as $key => $value) {
@@ -43,19 +43,19 @@ class Elevator extends ElevatorBase
                 }
             }
             if ($next_stage == $this->Floor) {
-                $stream->write($lift_on_your_floor_message . $this->Floor . "\n");
+                $stream->write($lift_y_floor_mess . $this->Floor . "\n");
                 unset($this->CallCar[$next_stage]);
                 return;
             }
             if ($this->Floor < $next_stage) {
                 for ($index = $this->Floor; $index <= $next_stage; $index++) {
                     sleep($this->FloorTime);
-                    $stream->write($lift_on_floor_message . $index . "\n");
+                    $stream->write($lift_mess . $index . "\n");
                 }
             } else {
                 for ($index = $this->Floor; $index >= $next_stage; $index--) {
                     sleep($this->FloorTime);
-                    $stream->write($lift_on_floor_message . $index . "\n");
+                    $stream->write($lift_mess . $index . "\n");
                 }
             }
             $this->Floor = $next_stage;
@@ -72,19 +72,19 @@ class Elevator extends ElevatorBase
                     }
                 }
                 if ($next_stage == $this->Floor) {
-                    $stream->write($lift_on_your_floor_message . $this->Floor . "\n");
+                    $stream->write($lift_y_floor_mess . $this->Floor . "\n");
                     unset($this->CallMove[$next_stage]);
                     return;
                 }
                 if ($this->Floor < $next_stage) {
-                    for ($index=$this->Floor; $index <= $next_stage; $index++) {
+                    for ($index = $this->Floor; $index <= $next_stage; $index++) {
                         sleep($this->FloorTime);
-                        $stream->write($lift_on_floor_message . $index . "\n");
+                        $stream->write($lift_mess . $index . "\n");
                     }
                 } else {
                     for ($index = $this->Floor; $index >= $next_stage; $index--) {
                         sleep($this->FloorTime);
-                        $stream->write($lift_on_floor_message . $index . "\n");
+                        $stream->write($lift_mess . $index . "\n");
                     }
                 }
                 $this->Floor = $next_stage;
@@ -98,10 +98,10 @@ class Elevator extends ElevatorBase
     /**
    * set floor for lift
    *
-   * @param  int $floor
+   * @param  int $floor floor number
    * @return \Lift\Elevator
    */
-    public function ElevatorCar($floor) 
+    public function elevatorCar($floor) 
     {
         $floor = (int) $floor;
         if (is_numeric($floor) && self::MAX_FLOOR >= $floor 
@@ -117,10 +117,10 @@ class Elevator extends ElevatorBase
     /**
    * set floor for call
    *
-   * @param  int $floor
+   * @param  int $floor floor number
    * @return \Lift\Elevator
    */
-    public function ElevatorMove($floor) 
+    public function elevatorMove($floor) 
     {
         $floor = (int) $floor;
         if (is_numeric($floor) && self::MAX_FLOOR >= $floor 
