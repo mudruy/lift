@@ -1,4 +1,5 @@
 <?php
+
 /**
  * We use Building like factory of elevators
  *
@@ -10,34 +11,34 @@
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/mudruy/lift
  */
-
-
 use Lift\Elevator;
+
 namespace Lift;
 
 class Building
 {
+
     static protected $elevators = array('1' => null);
     static public $is_object_exist = false;
-    
+
     CONST SERVER_ADRESS = 'tcp://127.0.0.1:8787';
-    
+
     /**
-     * return instanse of Elevator
-     *
-     * @return \Lift\Elevator
-     */
+   * return instanse of Elevator
+   *
+   * @return \Lift\Elevator
+   */
     public static function getElevator() 
     {
         $elevators_load = array();
         foreach (self::$elevators as $key => $value) {
             if (is_object(self::$elevators[$key]) 
-                && self::$elevators[$key] instanceof Elevator 
+                && self::$elevators[$key] instanceof Elevator
             ) {
                 self::$is_object_exist = true;
                 //check elevator loading
-                $elevators_load[$key] = self::$elevators[$key]->getCallCarCount()
-                        + self::$elevators[$key]->getCallMoveCount();;
+                $elevators_load[$key] = self::$elevators[$key]->getCallCarCount() 
+                + self::$elevators[$key]->getCallMoveCount();
             } else {
                 self::$elevators[$key] = self::createElevator($key);
                 $elevators_load[$key] = 0;
@@ -50,12 +51,12 @@ class Building
     }
 
     /**
-     * create elevator
-     *
-     * @param  string $elevator_name
-     * @return \Lift\Elevator
-     */
-    protected static function createElevator( $elevator_name ) 
+   * Create elevator
+   *
+   * @param  string $elevator_name number of lift
+   * @return \Lift\Elevator
+   */
+    protected static function createElevator($elevator_name) 
     {
         try {
             return self::$elevators[$elevator_name] = new Elevator();
@@ -63,29 +64,30 @@ class Building
             throw $exc;
         }
     }
-    
+
     /**
-     * run all lift in a building as server
-     * implement one tread server socket
-     * @return void
-     */
-    public static function execute()
+   * run all lift in a building as server
+   * implement one tread server socket
+   *
+   * @return void
+   */
+    public static function execute() 
     {
-        
+
         $factory = new \Socket\Raw\Factory();
         $socket = $factory->createServer(self::SERVER_ADRESS);
-        
+
         $msg = "\nДобро пожаловать на лифт сервер PHP. \n" .
-                "Чтобы отключиться, наберите 'exit'. ".
-                "Чтобы выключить лифт, наберите 'shutdown'.\n";
-        
+            "Чтобы отключиться, наберите 'exit'. " .
+            "Чтобы выключить лифт, наберите 'shutdown'.\n";
+
         do {
             $stream = $socket->accept();
             $stream->write($msg);
-            
+
             do {
-                $buf =  $stream->read(2048, PHP_NORMAL_READ);
-                
+                $buf = $stream->read(2048, PHP_NORMAL_READ);
+
                 if (!$buf = trim($buf)) {
                     continue;
                 }
@@ -96,10 +98,10 @@ class Building
                     $stream->close();
                     break 2;
                 }
-                if($buf !== '') {
+                if ($buf !== '') {
                     self::upDownLift($buf, $stream);
                 }
-                
+
                 $send = "PHP: Вы сказали '$buf'.\n";
                 $stream->write($send);
                 echo $send;
@@ -108,18 +110,19 @@ class Building
         } while (true);
         $socket->close();
     }
-    
+
     /**
+   * Function for travel by up and down
      * 
-     * @param string             $buf
-     * @param  \Socket\Raw\Socket $stream
-     * @return boolean
-     */
+   * @param  string             $buf    String from telnet
+   * @param  \Socket\Raw\Socket $stream Socket for feedback
+   * @return boolean
+   */
     protected static function upDownLift($buf, $stream) 
     {
         $elevator = self::getElevator();
         try {
-            if($elevator->getFloor() == $buf) {
+            if ($elevator->getFloor() == $buf) {
                 $elevator->ElevatorCar($buf);
             } else {
                 $elevator->ElevatorMove($buf);
@@ -127,8 +130,9 @@ class Building
         } catch (\Exception $exc) {
             $stream->write($exc->getMessage());
         }
-        
+
         $elevator->run($stream);
         return false;
     }
+
 }
