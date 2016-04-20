@@ -64,7 +64,7 @@ class Elevator extends ElevatorBase
             $this->Floor = $next_stage;
             unset($this->CallCar[$next_stage]);
 
-            $stream->write('Лифт прибыл на ваш этаж' . $next_stage . "\n");
+            $stream->write('Лифт прибыл на ваш этаж ' . $next_stage . "\n");
         } else {
             //if lift empty
             if (count($this->CallMove) > 0) {
@@ -96,7 +96,7 @@ class Elevator extends ElevatorBase
                 $this->Floor = $next_stage;
                 unset($this->CallMove[$next_stage]);
 
-                $stream->write('Лифт прибыл на ваш этаж' . $next_stage . "\n");
+                $stream->write('Лифт прибыл на ваш этаж ' . $next_stage . "\n");
             }
         }
     }
