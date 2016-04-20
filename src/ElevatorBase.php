@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base elevator functions
  *
@@ -12,6 +13,7 @@
  */
 
 namespace Lift;
+
 use Lift\ElevatorInterface;
 
 /**
@@ -21,6 +23,7 @@ use Lift\ElevatorInterface;
  */
 abstract class ElevatorBase implements ElevatorInterface
 {
+
     protected $Floor;
     protected $State;
     //command from user inside lift
@@ -29,89 +32,88 @@ abstract class ElevatorBase implements ElevatorInterface
     protected $CallMove = array();
     protected $FloorTime;
 
-    
     CONST FLOOR_TIME = 1;
-    CONST FLOOR      = 1;
-    
+    CONST FLOOR = 1;
+
     /**
-     * make lift moving
-     *
-     * @param \Socket\Raw\Socket $stream
-     */
+   * Make lift moving
+   *
+   * @param  \Socket\Raw\Socket $stream Log object
+   * @return void void
+   */
     abstract public function run($stream);
 
     /**
-     * get current floor 
-     *
-     * @return int
-     */
-    public function getFloor()
+   * Get current floor 
+   *
+   * @return int
+   */
+    public function getFloor() 
     {
         return $this->Floor;
     }
 
     /**
-     * init elevator speed
-     */
+   * Init elevator speed
+   */
     public function __construct() 
     {
         $this->FloorTime = self::FLOOR_TIME;
         $this->Floor = self::FLOOR;
     }
-    
-    
+
     /**
-     * get count of whish list human inside elevator
-     *
-     * @return int
-     */
-    public function getCallCarCount()
+   * Get count of whish list human inside elevator
+   *
+   * @return int
+   */
+    public function getCallCarCount() 
     {
         return count($this->CallCar);
     }
-    
+
     /**
-     * get count of whish list in floors
-     *
-     * @return int
-     */
-    public function getCallMoveCount()
+   * Get count of whish list in floors
+   *
+   * @return int
+   */
+    public function getCallMoveCount() 
     {
         return count($this->CallMove);
     }
-    
+
     /**
-     * set call for lift
-     *
-     * @param  int $floor
-     * @return \Lift\Elevator
-     */
-    public function elevatorMove($floor)
+   * Set call for lift
+   *
+   * @param  int $floor number of floor
+   * @return \Lift\Elevator
+   */
+    public function elevatorMove($floor) 
     {
-        $floor = (int)$floor;
-        if(is_numeric($floor)) {
+        $floor = (int) $floor;
+        if (is_numeric($floor)) {
             $this->CallMove[$floor] = 1;
         } else {
             throw new \Exception('Try valid floor');
         }
         return $this;
     }
-    
+
     /**
-     * set floor for lift
-     *
-     * @param  int $floor
-     * @return \Lift\Elevator
-     */
-    public function elevatorCar($floor)
+   * Set floor for lift
+   *
+   * @param  int $floor floor number
+   * @return \Lift\Elevator
+   */
+    public function elevatorCar($floor) 
     {
-        $floor = (int)$floor;
-        if(is_numeric($floor)) {
+        $floor = (int) $floor;
+        if (is_numeric($floor)) {
             $this->CallCar[$floor] = 1;
         } else {
             throw new \Exception('Try valid floor');
         }
         return $this;
     }
-    
+
 }
