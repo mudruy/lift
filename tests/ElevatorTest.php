@@ -44,8 +44,6 @@ class ElevatorTest extends PHPUnit_Framework_TestCase
     {
         $elevator = new Elevator();
         $elevator->elevatorMove(6);
-        $elevator->elevatorMove(-1);
-        $elevator->elevatorMove('Hello');
     }
     
     /**
