@@ -47,5 +47,25 @@ class ElevatorTest extends PHPUnit_Framework_TestCase
         $elevator->elevatorMove(-1);
         $elevator->elevatorMove('Hello');
     }
+    
+    /**
+   * @expectedException     Exception
+   * @expectedExceptionMessage Try valid floor
+   */
+    public function testExceptionElevatorMoveDown() 
+    {
+        $elevator = new Elevator();
+        $elevator->elevatorMove(-1);
+    }
+    
+    /**
+   * @expectedException     Exception
+   * @expectedExceptionMessage Try valid floor
+   */
+    public function testExceptionElevatorMoveWord() 
+    {
+        $elevator = new Elevator();
+        $elevator->elevatorMove('Hello');
+    }
 
 }
