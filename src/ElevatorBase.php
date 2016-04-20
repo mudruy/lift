@@ -8,7 +8,8 @@ use Lift\ElevatorInterface;
  *
  * @author admin
  */
-abstract class ElevatorBase implements ElevatorInterface {
+abstract class ElevatorBase implements ElevatorInterface
+{
     protected $Floor;
     protected $State;
     //command from user inside lift
@@ -23,22 +24,26 @@ abstract class ElevatorBase implements ElevatorInterface {
     
     /**
      * make lift moving
-     * @param  \Socket\Raw\Socket $stream
+     *
+     * @param \Socket\Raw\Socket $stream
      */
     abstract public function run($stream);
 
     /**
      * get current floor 
+     *
      * @return int
      */
-    public function getFloor(){
+    public function getFloor()
+    {
         return $this->Floor;
     }
 
     /**
      * init elevator speed
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $this->FloorTime = self::FLOOR_TIME;
         $this->Floor = self::FLOOR;
     }
@@ -46,26 +51,32 @@ abstract class ElevatorBase implements ElevatorInterface {
     
     /**
      * get count of whish list human inside elevator
+     *
      * @return int
      */
-    public function getCallCarCount(){
+    public function getCallCarCount()
+    {
         return count($this->CallCar);
     }
     
     /**
      * get count of whish list in floors
+     *
      * @return int
      */
-    public function getCallMoveCount(){
+    public function getCallMoveCount()
+    {
         return count($this->CallMove);
     }
     
     /**
      * set call for lift
-     * @param int $floor
+     *
+     * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorMove($floor){
+    public function ElevatorMove($floor)
+    {
         $floor = (int)$floor;
         if(is_numeric($floor)) {
             $this->CallMove[$floor] = 1;
@@ -77,10 +88,12 @@ abstract class ElevatorBase implements ElevatorInterface {
     
     /**
      * set floor for lift
-     * @param int $floor
+     *
+     * @param  int $floor
      * @return \Lift\Elevator
      */
-    public function ElevatorCar($floor){
+    public function ElevatorCar($floor)
+    {
         $floor = (int)$floor;
         if(is_numeric($floor)) {
             $this->CallCar[$floor] = 1;

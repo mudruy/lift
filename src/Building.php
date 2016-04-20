@@ -9,7 +9,8 @@ namespace Lift;
  *
  * @author admin
  */
-class Building {
+class Building
+{
     static protected $elevators = array('1' => null);
     static public $is_object_exist = false;
     
@@ -17,12 +18,14 @@ class Building {
     
     /**
      * return instanse of Elevator
+     *
      * @return \Lift\Elevator
      */
-    public static function getElevator() {
+    public static function getElevator() 
+    {
         $elevators_load = array();
         foreach (self::$elevators as $key => $value) {
-            if (is_object( self::$elevators[$key]) && self::$elevators[$key] instanceof Elevator ) {
+            if (is_object(self::$elevators[$key]) && self::$elevators[$key] instanceof Elevator ) {
                 self::$is_object_exist = true;
                 //check elevator loading
                 $elevators_load[$key] = self::$elevators[$key]->getCallCarCount()
@@ -40,12 +43,14 @@ class Building {
 
     /**
      * create elevator
-     * @param string $elevator_name
+     *
+     * @param  string $elevator_name
      * @return \Lift\Elevator
      */
-    protected static function createElevator( $elevator_name ) {
+    protected static function createElevator( $elevator_name ) 
+    {
         try {
-            return self::$elevators[$elevator_name] = new Elevator ();
+            return self::$elevators[$elevator_name] = new Elevator();
         } catch (Exception $exc) {
             throw $exc;
         }
@@ -55,7 +60,8 @@ class Building {
      * run all lift in a building as server
      * implement one tread server socket
      */
-    public static function execute(){
+    public static function execute()
+    {
         
         $factory = new \Socket\Raw\Factory();
         $socket = $factory->createServer(self::SERVER_ADRESS);
@@ -95,11 +101,12 @@ class Building {
     
     /**
      * 
-     * @param string              $buf
+     * @param string             $buf
      * @param  \Socket\Raw\Socket $stream
      * @return boolean
      */
-    protected static function upDownLift($buf, $stream) {
+    protected static function upDownLift($buf, $stream) 
+    {
         $elevator = self::getElevator();
         try {
             if($elevator->getFloor() == $buf) {

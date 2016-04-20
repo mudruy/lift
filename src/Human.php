@@ -7,7 +7,8 @@ namespace Lift;
  *
  * @author admin
  */
-class Human {
+class Human
+{
     
     protected $CurFloor;
     protected $TgtFloor;
@@ -17,28 +18,32 @@ class Human {
     /**
      * init start user position
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $this->CurFloor = self::DEFAULT_FLOOR;
     }
 
     /**
      * Set init position for human
      * 
-     * @param int $floor
+     * @param  int $floor
      * @return \Lift\Human
      */
-    public function setCurFloor($floor) {
+    public function setCurFloor($floor) 
+    {
         $this->CurFloor = $floor;
         return $this;
     }
     
     /**
      * set target floor for human
-     * @param int $floor
+     *
+     * @param  int $floor
      * @return \Lift\Human
      */
-    public function setTgtFloor($floor) {
-        if(is_int($floor)){
+    public function setTgtFloor($floor) 
+    {
+        if(is_int($floor)) {
             $this->TgtFloor = $floor;
         }
         return $this;
@@ -46,17 +51,21 @@ class Human {
     
     /**
      * get wantedf floor
+     *
      * @return int
      */
-    public function getTgtFloor() {
+    public function getTgtFloor() 
+    {
         return $this->TgtFloor;
     }
     
     /**
      * get current floor
+     *
      * @return int
      */
-    public function getCurFloor() {
+    public function getCurFloor() 
+    {
         return $this->CurFloor;
     }
 }
