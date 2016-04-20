@@ -16,8 +16,37 @@ class Elevator extends ElevatorBase{
     
     
     public function run() {
-        sleep(1);
-        die('go');
+        
+        $factory = new \Socket\Raw\Factory();
+        $address = 'tcp://192.168.31.135:8787';
+        $socket = $factory->createServer($address);
+        
+        $msg = "\nДобро пожаловать на  лифт сервер PHP. \n" .
+                "Чтобы отключиться, наберите 'exit'. Чтобы выключить сервер, наберите 'shutdown'.\n";
+        
+        do {
+            $stream = $socket->accept();
+            $stream->write($msg);
+            do {
+                $buf =  $stream->read(2048, PHP_NORMAL_READ);
+                
+                if (!$buf = trim($buf)) {
+                    continue;
+                }
+                if ($buf == 'exit') {
+                    break;
+                }
+                if ($buf == 'shutdown') {
+                    $stream->close();
+                    break 2;
+                }
+                $send = "PHP: Вы сказали '$buf'.\n";
+                $stream->write($send);
+                echo $send;
+            } while (true);
+            $stream->close();
+        } while (true);
+        $socket->close();
     }
     
     /**

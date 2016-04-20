@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
+    'Socket\\Raw\\' => array($vendorDir . '/clue/socket-raw/src'),
     'Lift\\' => array($baseDir . '/src'),
 );
