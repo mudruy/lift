@@ -10,9 +10,10 @@ namespace Lift;
  * @author admin
  */
 class Building {
-    static protected $elevators = array('1' => null, '2' => null);
+    static protected $elevators = array('1' => null);
     static public $is_object_exist = false;
     
+    CONST SERVER_ADRESS = 'tcp://127.0.0.1:8787';
     
     /**
      * return instanse of Elevator
@@ -48,5 +49,69 @@ class Building {
         } catch (Exception $exc) {
             throw $exc;
         }
+    }
+    
+    /**
+     * run all lift in a building as server
+     * implement one tread server socket
+     */
+    public static function execute(){
+        
+        $factory = new \Socket\Raw\Factory();
+        $socket = $factory->createServer(self::SERVER_ADRESS);
+        
+        $msg = "\nДобро пожаловать на лифт сервер PHP. \n" .
+                "Чтобы отключиться, наберите 'exit'. Чтобы выключить лифт, наберите 'shutdown'.\n";
+        
+        do {
+            $stream = $socket->accept();
+            $stream->write($msg);
+            
+            do {
+                $buf =  $stream->read(2048, PHP_NORMAL_READ);
+                
+                if (!$buf = trim($buf)) {
+                    continue;
+                }
+                if ($buf == 'exit') {
+                    break;
+                }
+                if ($buf == 'shutdown') {
+                    $stream->close();
+                    break 2;
+                }
+                if($buf !== '') {
+                    self::upDownLift($buf, $stream);
+                }
+                
+                $send = "PHP: Вы сказали '$buf'.\n";
+                $stream->write($send);
+                echo $send;
+            } while (true);
+            $stream->close();
+        } while (true);
+        $socket->close();
+    }
+    
+    /**
+     * 
+     * @param string              $buf
+     * @param  \Socket\Raw\Socket $stream
+     * @return boolean
+     */
+    protected static function upDownLift($buf, $stream) {
+        $elevator = self::getElevator();
+        try {
+            if($elevator->getFloor() == $buf) {
+                $elevator->ElevatorCar($buf);
+            } else {
+                $elevator->ElevatorMove($buf);
+            }
+        } catch (\Exception $exc) {
+            $stream->write($exc->getMessage());
+        }
+        
+        $elevator->run($stream);
+        return false;
     }
 }

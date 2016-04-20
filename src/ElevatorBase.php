@@ -17,20 +17,30 @@ abstract class ElevatorBase implements ElevatorInterface {
     protected $CallMove = array();
     protected $FloorTime;
 
-
-    CONST STATE_UP = 'GoingUp';
-    CONST STATE_DOWN = 'GoingDown';
-    CONST STATE_NEUTRAL = 'Neutral';
     
     CONST FLOOR_TIME = 1;
+    CONST FLOOR      = 1;
     
-    abstract public function run();
+    /**
+     * make lift moving
+     * @param  \Socket\Raw\Socket $stream
+     */
+    abstract public function run($stream);
 
-        /**
+    /**
+     * get current floor 
+     * @return int
+     */
+    public function getFloor(){
+        return $this->Floor;
+    }
+
+    /**
      * init elevator speed
      */
     public function __construct() {
         $this->FloorTime = self::FLOOR_TIME;
+        $this->Floor = self::FLOOR;
     }
     
     
@@ -56,7 +66,12 @@ abstract class ElevatorBase implements ElevatorInterface {
      * @return \Lift\Elevator
      */
     public function ElevatorMove($floor){
-        $this->CallMove[$floor] = 1;
+        $floor = (int)$floor;
+        if(is_numeric($floor)) {
+            $this->CallMove[$floor] = 1;
+        } else {
+            throw new \Exception('Try valid floor');
+        }
         return $this;
     }
     
@@ -66,10 +81,11 @@ abstract class ElevatorBase implements ElevatorInterface {
      * @return \Lift\Elevator
      */
     public function ElevatorCar($floor){
-        if(is_int($floor)) {
+        $floor = (int)$floor;
+        if(is_numeric($floor)) {
             $this->CallCar[$floor] = 1;
         } else {
-            throw new Exception('Try valid floor');
+            throw new \Exception('Try valid floor');
         }
         return $this;
     }

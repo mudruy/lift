@@ -9,44 +9,78 @@ namespace Lift;
  *
  * @author admin
  */
-class Elevator extends ElevatorBase{
+class Elevator extends ElevatorBase {
     
-    CONST MAX_FLOOR = 4;
-    CONST MIN_FLOOR = 0;
+    CONST MAX_FLOOR = 5;
+    CONST MIN_FLOOR = 1;
     
-    
-    public function run() {
-        
-        $factory = new \Socket\Raw\Factory();
-        $address = 'tcp://192.168.31.135:8787';
-        $socket = $factory->createServer($address);
-        
-        $msg = "\nДобро пожаловать на  лифт сервер PHP. \n" .
-                "Чтобы отключиться, наберите 'exit'. Чтобы выключить сервер, наберите 'shutdown'.\n";
-        
-        do {
-            $stream = $socket->accept();
-            $stream->write($msg);
-            do {
-                $buf =  $stream->read(2048, PHP_NORMAL_READ);
-                
-                if (!$buf = trim($buf)) {
-                    continue;
-                }
-                if ($buf == 'exit') {
+    /**
+     * 
+     * @param  \Socket\Raw\Socket $stream
+     */
+    public function run($stream) {
+        //if exist humane inside lift 
+        if(count($this->CallCar) > 0 ){
+            foreach ($this->CallCar as $key => $value) {
+                if($value == 1) {
+                    $next_stage = $key;
                     break;
                 }
-                if ($buf == 'shutdown') {
-                    $stream->close();
-                    break 2;
+            }
+            if($next_stage == $this->Floor){
+                $stream->write('Лифт находиться на вашем этаже '.$this->Floor . "\n");
+                unset($this->CallCar[$next_stage]);
+                return;
+            }
+            if($this->Floor < $next_stage){
+                for ($index = $this->Floor; $index <= $next_stage; $index++) {
+                    sleep($this->FloorTime);
+                    $stream->write('Лифт находиться на этаже '.$index . "\n");
                 }
-                $send = "PHP: Вы сказали '$buf'.\n";
-                $stream->write($send);
-                echo $send;
-            } while (true);
-            $stream->close();
-        } while (true);
-        $socket->close();
+            } else {
+                for ($index = $this->Floor; $index >= $next_stage; $index--) {
+                    sleep($this->FloorTime);
+                    $stream->write('Лифт находиться на этаже '.$index . "\n");
+                }
+            }
+            $this->Floor = $next_stage;
+            unset($this->CallCar[$next_stage]);
+
+            $stream->write('Лифт прибыл на ваш этаж' . $next_stage . "\n");
+
+        
+        } else {
+            //if lift empty
+            if(count($this->CallMove) > 0 ){
+                foreach ($this->CallMove as $key => $value) {
+                    if($value == 1) {
+                        $next_stage = $key;
+                        break;
+                    }
+                }
+                if($next_stage == $this->Floor){
+                    $stream->write('Лифт находиться на вашем этаже '.$this->Floor . "\n");
+                    unset($this->CallMove[$next_stage]);
+                    return;
+                }
+                if($this->Floor < $next_stage){
+                    for ($index = $this->Floor; $index <= $next_stage; $index++) {
+                        sleep($this->FloorTime);
+                        $stream->write('Лифт находиться на этаже '.$index . "\n");
+                    }
+                } else {
+                    for ($index = $this->Floor; $index >= $next_stage; $index--) {
+                        sleep($this->FloorTime);
+                        $stream->write('Лифт находиться на этаже '.$index . "\n");
+                    }
+                }
+                $this->Floor = $next_stage;
+                unset($this->CallMove[$next_stage]);
+                
+                $stream->write('Лифт прибыл на ваш этаж' . $next_stage . "\n");
+                
+            }
+        }
     }
     
     /**
@@ -55,10 +89,26 @@ class Elevator extends ElevatorBase{
      * @return \Lift\Elevator
      */
     public function ElevatorCar($floor){
-        if(is_int($floor)&& self::MAX_FLOOR <= $floor && self::MIN_FLOOR >= $floor) {
+        $floor = (int)$floor;
+        if(is_numeric($floor)&& self::MAX_FLOOR >= $floor && self::MIN_FLOOR <= $floor) {
             $this->CallCar[$floor] = 1;
         } else {
-            throw new Exception('Try valid floor');
+            throw new \Exception("Try valid floor\n");
+        }
+        return $this;
+    }
+    
+    /**
+     * set floor for call
+     * @param int $floor
+     * @return \Lift\Elevator
+     */
+    public function ElevatorMove($floor){
+        $floor = (int)$floor;
+        if(is_numeric($floor)&& self::MAX_FLOOR >= $floor && self::MIN_FLOOR <= $floor) {
+            $this->CallMove[$floor] = 1;
+        } else {
+            throw new \Exception("Try valid floor\n");
         }
         return $this;
     }

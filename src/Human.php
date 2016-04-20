@@ -43,4 +43,20 @@ class Human {
         }
         return $this;
     }
+    
+    /**
+     * get wantedf floor
+     * @return int
+     */
+    public function getTgtFloor() {
+        return $this->TgtFloor;
+    }
+    
+    /**
+     * get current floor
+     * @return int
+     */
+    public function getCurFloor() {
+        return $this->CurFloor;
+    }
 }
