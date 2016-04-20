@@ -42,17 +42,20 @@ class Elevator extends ElevatorBase
                     break;
                 }
             }
+            //the same floor
             if ($next_stage == $this->Floor) {
                 $stream->write($lift_y_floor_mess . $this->Floor . "\n");
                 unset($this->CallCar[$next_stage]);
                 return;
             }
+            //go up
             if ($this->Floor < $next_stage) {
                 for ($i = $this->Floor; $i <= $next_stage; $i++) {
                     sleep($this->FloorTime);
                     $stream->write($lift_mess . $i . "\n");
                 }
             } else {
+                //go down
                 for ($i = $this->Floor; $i >= $next_stage; $i--) {
                     sleep($this->FloorTime);
                     $stream->write($lift_mess . $i . "\n");
@@ -71,17 +74,20 @@ class Elevator extends ElevatorBase
                         break;
                     }
                 }
+                //the same floor
                 if ($next_stage == $this->Floor) {
                     $stream->write($lift_y_floor_mess . $this->Floor . "\n");
                     unset($this->CallMove[$next_stage]);
                     return;
                 }
+                //go up
                 if ($this->Floor < $next_stage) {
                     for ($i = $this->Floor; $i <= $next_stage; $i++) {
                         sleep($this->FloorTime);
                         $stream->write($lift_mess . $i . "\n");
                     }
                 } else {
+                    //go down
                     for ($i = $this->Floor; $i >= $next_stage; $i--) {
                         sleep($this->FloorTime);
                         $stream->write($lift_mess . $i . "\n");
@@ -96,7 +102,7 @@ class Elevator extends ElevatorBase
     }
 
     /**
-   * set floor for lift
+   * Set floor for lift
    *
    * @param  int $floor floor number
    * @return \Lift\Elevator
@@ -115,7 +121,7 @@ class Elevator extends ElevatorBase
     }
 
     /**
-   * set floor for call
+   * Set floor for call
    *
    * @param  int $floor floor number
    * @return \Lift\Elevator
