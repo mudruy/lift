@@ -22,7 +22,7 @@ class BuildingTest extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass() 
     {
         parent::setUpBeforeClass();
-        $cmd = "nohup timeout 60 php run.php &>/dev/null &";
+        $cmd = "nohup php run.php &>/dev/null &";
         shell_exec($cmd);
     }
 
