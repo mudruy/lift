@@ -14,7 +14,7 @@
 namespace Lift;
 
 /**
- * declare how use lift by buttons
+ * Declare how use lift by buttons
  *
  * @author admin
  */
@@ -23,17 +23,17 @@ interface ElevatorInterface
 
 
     /**
-     * tell elevator where is human
+     * Tell elevator where is human
      *
-     * @param  int $floor
+     * @param  int $floor floor number
      * @return \Lift\Elevator
      */
     public function elevatorMove($floor);
     
     /**
-     * tell elevator in which floor human want
+     * Tell elevator in which floor human want
      *
-     * @param  int $floor
+     * @param  int $floor floor number
      * @return \Lift\Elevator
      */
     public function elevatorCar($floor);
