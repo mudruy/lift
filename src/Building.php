@@ -1,14 +1,20 @@
 <?php
+/**
+ * We use Building like factory of elevators
+ *
+ * PHP version 5
+ * 
+ * @category Elevator
+ * @package  Lift.Sample
+ * @author   mudruy <mudruy@mail.ru>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     https://github.com/mudruy/lift
+ */
+
 
 use Lift\Elevator;
 namespace Lift;
 
-
-/**
- * We use Building like factory of elevators
- *
- * @author admin
- */
 class Building
 {
     static protected $elevators = array('1' => null);
@@ -25,7 +31,9 @@ class Building
     {
         $elevators_load = array();
         foreach (self::$elevators as $key => $value) {
-            if (is_object(self::$elevators[$key]) && self::$elevators[$key] instanceof Elevator ) {
+            if (is_object(self::$elevators[$key]) 
+                && self::$elevators[$key] instanceof Elevator 
+            ) {
                 self::$is_object_exist = true;
                 //check elevator loading
                 $elevators_load[$key] = self::$elevators[$key]->getCallCarCount()
@@ -59,6 +67,7 @@ class Building
     /**
      * run all lift in a building as server
      * implement one tread server socket
+     * @return void
      */
     public static function execute()
     {
@@ -67,7 +76,8 @@ class Building
         $socket = $factory->createServer(self::SERVER_ADRESS);
         
         $msg = "\nДобро пожаловать на лифт сервер PHP. \n" .
-                "Чтобы отключиться, наберите 'exit'. Чтобы выключить лифт, наберите 'shutdown'.\n";
+                "Чтобы отключиться, наберите 'exit'. ".
+                "Чтобы выключить лифт, наберите 'shutdown'.\n";
         
         do {
             $stream = $socket->accept();
