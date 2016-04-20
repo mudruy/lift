@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Implement elevator moving
  *
@@ -28,7 +27,8 @@ class Elevator extends ElevatorBase
 
     /**
    * 
-   * @param  \Socket\Raw\Socket $stream
+   * @param  \Socket\Raw\Socket $stream socket for feedback
+     * @return void void
    */
     public function run($stream) 
     {
@@ -48,14 +48,14 @@ class Elevator extends ElevatorBase
                 return;
             }
             if ($this->Floor < $next_stage) {
-                for ($index = $this->Floor; $index <= $next_stage; $index++) {
+                for ($i = $this->Floor; $i <= $next_stage; $i++) {
                     sleep($this->FloorTime);
-                    $stream->write($lift_mess . $index . "\n");
+                    $stream->write($lift_mess . $i . "\n");
                 }
             } else {
-                for ($index = $this->Floor; $index >= $next_stage; $index--) {
+                for ($i = $this->Floor; $i >= $next_stage; $i--) {
                     sleep($this->FloorTime);
-                    $stream->write($lift_mess . $index . "\n");
+                    $stream->write($lift_mess . $i . "\n");
                 }
             }
             $this->Floor = $next_stage;
@@ -77,14 +77,14 @@ class Elevator extends ElevatorBase
                     return;
                 }
                 if ($this->Floor < $next_stage) {
-                    for ($index = $this->Floor; $index <= $next_stage; $index++) {
+                    for ($i = $this->Floor; $i <= $next_stage; $i++) {
                         sleep($this->FloorTime);
-                        $stream->write($lift_mess . $index . "\n");
+                        $stream->write($lift_mess . $i . "\n");
                     }
                 } else {
-                    for ($index = $this->Floor; $index >= $next_stage; $index--) {
+                    for ($i = $this->Floor; $i >= $next_stage; $i--) {
                         sleep($this->FloorTime);
-                        $stream->write($lift_mess . $index . "\n");
+                        $stream->write($lift_mess . $i . "\n");
                     }
                 }
                 $this->Floor = $next_stage;
