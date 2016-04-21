@@ -37,8 +37,6 @@ class Elevator extends ElevatorBase
     {
 
         $this->s = $stream;
-        $lift_mess = 'Лифт находиться на этаже ';
-        $lift_y_floor_mess = 'Лифт находиться на вашем этаже ';
         //if exist humane inside lift 
         if (count($this->CallCar) > 0) {
             $this->_travelWhithHuman();
@@ -55,7 +53,9 @@ class Elevator extends ElevatorBase
      */
     private function _travelWhithHuman() 
     {
-
+        
+        $lift_mess = 'Лифт находиться на этаже ';
+        $lift_y_floor_mess = 'Лифт находиться на вашем этаже ';
         foreach ($this->CallCar as $key => $value) {
             if ($value == 1) {
                 $next_stage = $key;
@@ -94,7 +94,9 @@ class Elevator extends ElevatorBase
      */
     private function _goToHuman() 
     {
-    
+        
+        $lift_mess = 'Лифт находиться на этаже ';
+        $lift_y_floor_mess = 'Лифт находиться на вашем этаже ';
         if (count($this->CallMove) > 0) {
             foreach ($this->CallMove as $key => $value) {
                 if ($value == 1) {
